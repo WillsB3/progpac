@@ -44,31 +44,33 @@
 </div>
 {% endif %}
 
-<form method="POST">
-  <div class="alert-message error">
-    <p><strong>Oh snap!</strong> <span class="message"></span></p>
+
+<div class="row">
+  
+  <div class="span8">
+    <div id="map" style="border: 2px solid; padding-left: 4px"></div>
   </div>
   
-  <div class="row">
-    <div class="span11 game-grid">
-      <div id="map" style="border: 2px solid; padding-left: 4px"></div>
-    </div>
-    <div class="span5 editor">
+  <div class="span4 editor">
+    <form class="well" method="post">
       {% csrf_token %}
       {{ form.text }}
-      <div class="actions">
+
+      <div class="form-actions">
 	<span class="code-counter">
           <span class="code-size">
 	  </span> /<span class="code-maxsize">
 	    {{ level.maxsize }}
 	  </span>
 	</span>
+
 	<input name="submit" type="submit" class="btn" value="Debug">
-        <input name="submit" type="submit" class="btn primary" value="Move it!">
+	<input name="submit" type="submit" class="btn btn-primary" value="Move it!">
       </div>
-    </div>
+    </form>
   </div>
-</form>
+  
+</div>
 
 {% if debug_code1 %}
 <pre>{{ debug_code1 }}</pre>
