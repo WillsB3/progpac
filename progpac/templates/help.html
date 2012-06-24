@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="help">
+  
+  <div class="page-header">
+    <h1>Help
+      <small>Here's a few words on how to move the little fellow!</small>
+    </h1>
+  </div>
+
+  <h2>Basic Steps 
+    <small>How to start and not hurt yourself</small>
+  </h2>
+
+  <p>
+    There is only tree <i>atomic</i> moves:
+    <ul class="unstyled">
+      <li><b>s</b> (<b>s</b>tep forward): slides the bug one field forward
+        <div class="sprite-step"></div>
+      </li>
+      <li>
+        <b>r</b> (turn <b>r</b>ight): turns the bug right
+        <div class="sprite-right"></div>
+      </li>
+      <li>
+        <b>l</b> (turn <b>l</b>eft): turns the bug left
+        <div class="sprite-left"></div>
+      </li>
+      <li>
+        So   knowing  this,  it is   not  too   hard   to  discover   that
+        code <code>ssrsls</code> will result as shown in image.
+        <div class="sprite-example"></div>
+      </li>
+    </ul>
+  </p>
+
+  <h2>Functions 
+    <small>Call the same sequence of steps more than once</small>
+  </h2>
+
+  <p>
+    Creating  code  only  from  atomic   moves  could  be quite  hard  to
+    understand and not  very useful if you want to  beat the code counter.
+    Most  case maps  contained in  games  are some  sort of  symmetric
+    structures  which means  that  your  code in  most  cases could  be
+    re-used.  Instead  of using  Ctrl-C  and  Ctrl-V  operations  we  will use
+    functions.
+  </p>
+
+  <pre>
+    f:sssr
+    lf</pre>
+
+  <p>
+    Analyzing this code from second  line. First element is a well known
+    atomic  step <code>l  (turn  left)</code> which  means that the  first
+    action   taken  by   the bug   will  be   turning   left.  Next   step
+    is <code>f</code>  which is not  a valid  step, but in  first line
+    holds a  definition of  this not atomic  step (function).  So typing <code>f</code>
+    runs the steps specified in the f function, <code>sssr</code>.
+  </p>
+
+  <p>
+    Functions  have to  be named  with the use  of single  lowercase letters,
+    but not one of the reserved step letters: s, r and l. 
+  </p>
+
+  <p>
+    You are able to call defined  functions as many times and define as
+    many functions as you need  (well not quite because Latin alphabet
+    has 24 characters and 3 of them  are used for atomic moves, but it
+    is still a lot!).
+  </p>
+
+  <pre>
+    f:sssr 
+    x:lsss 
+    rxff</pre>
+
+  <p>
+    This example will result in
+  </p>
+
+  <pre>
+    rlssssssrsssr</pre>
+
+  <h2>Functions with arguments
+    <small>Call the same thing more than once in a different way</small>
+  </h2>
+
+  <p>Now you know  how  to define  functions and  keep moves  in
+    smaller prettier  parts.  Using functions is the recommended
+    way to solve the levels.
+    
+  </p>
+
+  <h2>Recursion
+    <small>Often there is a pattern of steps that can be encapsulated
+    in a function and then just repeated a number of times.</small>
+  </h2>
+
+  <p> steps </p>
+</div>
+{% endblock %}
+
