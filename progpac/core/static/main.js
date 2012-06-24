@@ -34,7 +34,7 @@ $(document).ready(function() {
     $('form').ajaxForm({
 	beforeSubmit: function () {
 	    $('.error').hide();
-	    helloworld.start($('#map'), LEVEL, "");
+	    game.start($('#map'), LEVEL, "");
 	},
 	success: function(response) {
 
@@ -43,7 +43,7 @@ $(document).ready(function() {
 		$('.error .message').text(response.errors.join());
 
 	    } else {
-		helloworld.start($('#map'), LEVEL, response.code);
+		game.start($('#map'), LEVEL, response.code);
 	    }
 	}
     });
