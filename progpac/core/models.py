@@ -67,7 +67,7 @@ class Level(models.Model):
 
     def __init__(self, *args, **kwargs):
         super(Level, self).__init__(*args, **kwargs)
-        self.lines = [map(str, line) for line in self.content.split("\n")]
+        self.lines = [map(str, line) for line in self.content.split()]
 
     def get(self, x, y):
         if x >= 0 and y >= 0:
