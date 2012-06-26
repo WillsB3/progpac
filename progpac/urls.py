@@ -1,5 +1,6 @@
 from django.conf.urls.defaults import patterns, include, url
-from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.conf import settings
+from django.conf.urls.static import static
 
 from progpac.core import views
 
@@ -15,5 +16,5 @@ urlpatterns = patterns('',
     url(r'^level/(?P<level_hash>\w+)/$', views.Level.as_view(), name='level'),
 
     url(r'^admin/', include(admin.site.urls)),
-)
-urlpatterns += staticfiles_urlpatterns()
+) + static(settings.STATIC_URL)
+
