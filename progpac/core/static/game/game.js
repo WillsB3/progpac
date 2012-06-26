@@ -123,7 +123,7 @@ game.start = function($element, LEVEL, CODE){
     	    }
 
 	    if (element == 'u') {
-		boy = generate_tile('assets/Character Boy.png', i, j)
+		boy = generate_tile('assets/guy_back.png', i, j)
     		target2.appendChild(boy)
     	    }
 
