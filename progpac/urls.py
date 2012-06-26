@@ -16,5 +16,10 @@ urlpatterns = patterns('',
     url(r'^level/(?P<level_hash>\w+)/$', views.Level.as_view(), name='level'),
 
     url(r'^admin/', include(admin.site.urls)),
-) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+
+    url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {
+        'document_root': settings.MEDIA_ROOT,
+    }),
+)
 
