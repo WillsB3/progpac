@@ -2,7 +2,7 @@ import os
 
 SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -105,6 +105,6 @@ LOGGING = {
 }
 
 try:
-    from deploy.settings import *
+    from local_settings import *
 except ImportError:
     pass
