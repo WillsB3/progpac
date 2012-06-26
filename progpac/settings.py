@@ -63,6 +63,11 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "progpac.context_processors.default"
 )
 
+INTERNAL_IPS = (
+    '127.0.0.1',
+    '0.0.0.0'
+)
+
 ROOT_URLCONF = 'progpac.urls'
 
 TEMPLATE_DIRS = (
