@@ -16,5 +16,5 @@ urlpatterns = patterns('',
     url(r'^level/(?P<level_hash>\w+)/$', views.Level.as_view(), name='level'),
 
     url(r'^admin/', include(admin.site.urls)),
-) + static(settings.STATIC_URL)
+) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
