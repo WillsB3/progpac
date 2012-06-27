@@ -83,7 +83,7 @@ INSTALLED_APPS = (
     'django.contrib.auth',
 
     'storages',
-    
+
     'progpac.core',
 )
 
@@ -107,9 +107,13 @@ LOGGING = {
 
 
 STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = 'progpac'
+AWS_HEADERS = {
+    'Access-Control-Allow-Origin': 'http://progpac.herokuapp.com/'
+}
 
 STATIC_ROOT = os.path.join(SITE_ROOT, '.static')
 STATIC_URL = 'https://s3.amazonaws.com/%s/' % AWS_STORAGE_BUCKET_NAME
