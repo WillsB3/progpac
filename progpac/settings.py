@@ -34,7 +34,7 @@ ADMIN_MEDIA_PREFIX = '/static/admin/'
 
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
 )
 
 TEMPLATE_LOADERS = (
@@ -78,11 +78,12 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.staticfiles',
 
     'storages',
+    'compressor',
 
     'progpac.core',
 )
@@ -106,17 +107,24 @@ LOGGING = {
 }
 
 
-STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = 'progpac'
-AWS_HEADERS = {
-    'Access-Control-Allow-Origin': 'http://progpac.herokuapp.com/'
-}
 
 STATIC_ROOT = os.path.join(SITE_ROOT, '.static')
 STATIC_URL = 'https://s3.amazonaws.com/%s/' % AWS_STORAGE_BUCKET_NAME
+
+STATICFILES_DIRS = (
+    os.path.join(SITE_ROOT, 'static'),
+)
+
+COMPRESS_OFFLINE = True
+COMPRESS_ENABLED = True
+COMPRESS_PRECOMPILERS = (
+    ('text/less', 'lessc {infile} {outfile}'),
+    ('limejs/javascript', './progpac/static-dev/limejs/bin/lime.py build game')
+)
 
 try:
     from local_settings import *

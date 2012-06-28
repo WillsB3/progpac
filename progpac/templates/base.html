@@ -1,5 +1,5 @@
-{% load static %}
 {% load tags %}
+{% load compress %}
 
 <html lang="en">
   <head>
@@ -11,29 +11,36 @@
 
     <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700">
     <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Chango">
-    <link rel="stylesheet/less" type="text/css" href="{% get_static_prefix %}main.less">
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-    <script src="//malsup.github.com/jquery.form.js"></script>
     
-    <script src="{% get_static_prefix %}less.js" type="text/javascript"></script>
-    <script src="{% get_static_prefix %}bootstrap/js/bootstrap-dropdown.js" type="text/javascript"></script>
-    <script src="{% get_static_prefix %}bootstrap/js/bootstrap-modal.js" type="text/javascript"></script>
+    {% compress css %}
+    <link type="text/less" rel="stylesheet" href="{{ STATIC_URL }}bootstrap/less/bootstrap.less" >
+    <link type="text/less" rel="stylesheet" href="{{ STATIC_URL }}main.less" >
+    {% endcompress %}
+
     
-    <script src="{% get_static_prefix %}main.js" type="text/javascript"></script>
+    {% compress js %}
+    <script src="{{ STATIC_URL }}bootstrap/js/bootstrap-dropdown.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}bootstrap/js/bootstrap-modal.js" type="text/javascript"></script>
+
+    <script src="{{ STATIC_URL }}jquery.form.js" type="text/javascript"></script>
+    
+    <script src="{{ STATIC_URL }}game/game.js" type="limejs/javascript"></script>
+    
+    <script src="{{ STATIC_URL }}main.js" type="text/javascript"></script>
+    {% endcompress %}
+
     
     {% if debug %}
-    <script src="{% get_static_prefix %}limejs/closure/closure/goog/base.js" type="text/javascript"></script>
-    <script src="{% get_static_prefix %}game/game.js" type="text/javascript"></script>
-    {% else %}
-    <script src="{% get_static_prefix %}game/game-min.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}limejs/closure/closure/goog/base.js" type="text/javascript"></script>
     {% endif %}
     
     <script type="text/javascript">
       var LEVEL = {{ level_json|safe }};
       var CODE = "{{ code|default:"" }}";
 
-      var STATIC_URL = "{% get_static_prefix %}";
+      var STATIC_URL = "{{ STATIC_URL }}";
     </script>
     {% include 'google_analytics.html' %}
   </head>
