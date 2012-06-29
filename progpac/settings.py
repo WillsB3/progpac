@@ -113,7 +113,7 @@ AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = 'progpac'
 
 STATIC_ROOT = os.path.join(SITE_ROOT, '.static')
-STATIC_URL = 'https://s3.amazonaws.com/%s/' % AWS_STORAGE_BUCKET_NAME
+STATIC_URL = 'https://s3.amazonaws.com/%s/CACHE/' % AWS_STORAGE_BUCKET_NAME
 
 STATICFILES_DIRS = (
     os.path.join(SITE_ROOT, 'static'),

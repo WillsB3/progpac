@@ -28,3 +28,4 @@ class Command(BaseCommand):
                 k.key = "%s/%s" % (root.lstrip(settings.STATIC_ROOT), f)
 
                 k.set_contents_from_filename('%s/%s' % (root,f))
+                k.make_public()
