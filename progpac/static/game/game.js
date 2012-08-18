@@ -17,6 +17,28 @@ goog.require('lime.animation.Loop');
 goog.require('lime.animation.Sequence');
 goog.require('lime.audio.Audio');
 
+function select_guy_sprite(direction, boy) {
+    debugger;
+    switch(direction) {
+
+    case 0:
+	boy.setFill(STATIC_URL + 'assets/guy_back.png')
+	break;
+
+    case 1:
+	boy.setFill(STATIC_URL + 'assets/guy_left.png')
+	break;
+
+    case 2:
+	boy.setFill(STATIC_URL + 'assets/guy_front.png')
+	break;
+
+    case 3:
+	boy.setFill(STATIC_URL + 'assets/guy_right.png')
+	break;
+    }
+}
+
 
 function move_animation(code) {
 
@@ -24,21 +46,37 @@ function move_animation(code) {
 	return null;
     }
 
-    var moves = [
-	new lime.animation.MoveBy(0, tile_h/2),
-	new lime.animation.MoveBy(-tile_w, 0),
-	new lime.animation.MoveBy(0, -tile_w),
-	new lime.animation.MoveBy(tile_h/2, 0)
-    ];
+    var move_down = new lime.animation.MoveBy(0, tile_h/2)
+    var move_right = new lime.animation.MoveBy(tile_w, 0)
+    var move_up = new lime.animation.MoveBy(0, -tile_h/2)
+    var move_left = new lime.animation.MoveBy(-tile_w, 0)
+
+    var moves = [move_down, move_right, move_up, move_left];
+
+    goog.events.listen(move_down, lime.animation.Event.STOP, function(){
+	select_guy_sprite(direction, boy)
+    });
+    goog.events.listen(move_up, lime.animation.Event.STOP, function(){
+	select_guy_sprite(direction, boy)
+    });
+    goog.events.listen(move_right, lime.animation.Event.STOP, function(){
+	select_guy_sprite(direction, boy)
+    });
+    goog.events.listen(move_left, lime.animation.Event.STOP, function(){
+	select_guy_sprite(direction, boy)
+    });
+
 
     var moves_list = [];
 
-    var direction = 2;
+    var direction = 0;
 
     $.each(code, function(i, element) {
 
 	if (element == 's') {
-	    moves_list.push( moves[ Math.abs(direction % 4) ])
+	    moves_list.push( moves[
+		(direction > 0 ? direction : direction+4) % 4
+	    ])
 	}
 	if (element == 'r') {
 	    direction--;
@@ -49,12 +87,13 @@ function move_animation(code) {
     });
 
     moves_list = $.map(moves_list, function(element) {
-	return element.setDuration(0.5)
+	return element.setDuration(0.5).enableOptimizations()
     })
 
     if (moves_list.length == 1) {
 	return moves_list[0]
     }
+
     return new lime.animation.Sequence(
 	moves_list
     );
@@ -95,8 +134,8 @@ game.start = function($element, LEVEL, CODE){
 
     $element.height(tile_x * LEVEL.length + tile_w);
 
-    var director = new lime.Director($('#map').get(0))
-    var scene = new lime.Scene()
+    director = new lime.Director($('#map').get(0))
+    scene = new lime.Scene()
 
     var target = new lime.Layer()
 	.setPosition(position_x, position_y);
@@ -104,27 +143,33 @@ game.start = function($element, LEVEL, CODE){
     var target2 = new lime.Layer()
 	.setPosition(position_x, position_y - (tile_h * 0.24));
 
-    var target3 = new lime.Layer()
-	.setPosition(position_x, position_y + (tile_h * 0.24));
+    target3 = new lime.Layer()
+	.setPosition(position_x, position_y - (tile_h * 0.24));
 
     var shadows = new lime.Layer()
     	.setPosition(position_x, position_y)
+
     var shadows_back = new lime.Layer()
     	.setPosition(position_x, position_y)
 
-    var boy = null;
+    boy = null;
     $.each(LEVEL, function(i, line) {
     	$.each(line, function(j, element) {
 
+	    target.appendChild(
+	    	generate_tile('assets/Grass Block.png', i, j)
+	    )
+
 	    if (element == 'o') {
     	    	target3.appendChild(
-	    	    generate_tile('assets/Star.png', i / 1.2, j)
+	    	    generate_tile('assets/Star.png', i, j)
 	    	);
     	    }
 
 	    if (element == 'u') {
-		boy = generate_tile('assets/guy_back.png', i, j)
-    		target2.appendChild(boy)
+    		target3.appendChild(
+		    boy = generate_tile('assets/guy_front.png', i, j)
+		)
     	    }
 
     	    if (element == '*') {
@@ -138,10 +183,6 @@ game.start = function($element, LEVEL, CODE){
 	    	    generate_tile('assets/Stone Block.png', i, j)
 	    	)
     	    }
-
-	    target.appendChild(
-	    	generate_tile('assets/Grass Block.png', i, j)
-	    )
 
 	    try {
 		if (is_field(element) && is_obstacle(LEVEL[i-1][j]) ) {
@@ -201,14 +242,13 @@ game.start = function($element, LEVEL, CODE){
     var animation = move_animation(CODE)
 
     if (animation) {
-	animation.addTarget(boy)
-	    .play();
+	animation.addTarget(boy).play();
     }
 
     scene.appendChild(target);
     scene.appendChild(shadows_back);
-    scene.appendChild(target3);
     scene.appendChild(target2);
+    scene.appendChild(target3);
     scene.appendChild(shadows);
 
     director.makeMobileWebAppCapable();
@@ -216,8 +256,6 @@ game.start = function($element, LEVEL, CODE){
     director.replaceScene(scene);
 }
 
-//this is required for outside access after
-//code is compiled in ADVANCED_COMPILATIONS mode
 goog.exportSymbol('game.start', game.start);
 
 $(document).ready(function() {
