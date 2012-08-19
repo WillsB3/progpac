@@ -17,6 +17,7 @@ function setup_code_counter() {
 }
 
 $(document).ready(function() {
+
     setup_code_counter();
 
     $('.editor textarea').on('keyup', function() {
@@ -32,20 +33,17 @@ $(document).ready(function() {
     });
 
     $('form').ajaxForm({
-	beforeSubmit: function () {
-	    $('.error').hide();
-	    game.start($('#map'), LEVEL, "");
-	},
-	success: function(response) {
+    	success: function(response) {
 
-	    if (response.errors.length) {
-		$('.error').show();
-		$('.error .message').text(response.errors.join());
+    	    if (response.errors.length) {
+    		$('.error').show();
+    		$('.error .message').text(response.errors.join());
 
-	    } else {
-		game.start($('#map'), LEVEL, response.code);
-	    }
-	}
+    	    } else {
+		console.log(response.code);
+    		game.render_dynamic(response.code);
+    	    }
+    	}
     });
 
 });
