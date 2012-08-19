@@ -373,11 +373,9 @@ goog.fx.AbstractDragDrop.prototype.startDrag = function(event, item) {
   var dragStartEvent = new goog.fx.DragDropEvent(
       goog.fx.AbstractDragDrop.EventType.DRAGSTART, this, this.dragItem_);
   if (this.dispatchEvent(dragStartEvent) == false) {
-    dragStartEvent.dispose();
     this.dragItem_ = null;
     return;
   }
-  dragStartEvent.dispose();
 
   // Get the source element and create a drag element for it.
   var el = item.getCurrentDragElement();
@@ -506,20 +504,17 @@ goog.fx.AbstractDragDrop.prototype.endDrag = function(event) {
         activeTarget.target_, activeTarget.item_, activeTarget.element_,
         clientX, clientY, x, y);
     this.dispatchEvent(dragEvent);
-    dragEvent.dispose();
 
     var dropEvent = new goog.fx.DragDropEvent(
         goog.fx.AbstractDragDrop.EventType.DROP, this, this.dragItem_,
         activeTarget.target_, activeTarget.item_, activeTarget.element_,
         clientX, clientY, x, y, subtarget);
     activeTarget.target_.dispatchEvent(dropEvent);
-    dropEvent.dispose();
   }
 
   var dragEndEvent = new goog.fx.DragDropEvent(
       goog.fx.AbstractDragDrop.EventType.DRAGEND, this, this.dragItem_);
   this.dispatchEvent(dragEndEvent);
-  dragEndEvent.dispose();
 
   goog.events.unlisten(this.dragger_, goog.fx.Dragger.EventType.DRAG,
                        this.moveDrag_, false, this);
@@ -588,7 +583,7 @@ goog.fx.AbstractDragDrop.prototype.moveDrag_ = function(event) {
           activeTarget.box_, x, y);
     }
 
-    if (this.isInside_(x, y, activeTarget.box_) &&
+    if (activeTarget.box_.contains(position) &&
         subtarget == this.activeSubtarget_) {
       return;
     }
@@ -598,7 +593,6 @@ goog.fx.AbstractDragDrop.prototype.moveDrag_ = function(event) {
           goog.fx.AbstractDragDrop.EventType.DRAGOUT, this, this.dragItem_,
           activeTarget.target_, activeTarget.item_, activeTarget.element_);
       this.dispatchEvent(sourceDragOutEvent);
-      sourceDragOutEvent.dispose();
 
       // The event should be dispatched the by target DragDrop so that the
       // target DragDrop can manage these events without having to know what
@@ -616,16 +610,15 @@ goog.fx.AbstractDragDrop.prototype.moveDrag_ = function(event) {
           undefined,
           this.activeSubtarget_);
       activeTarget.target_.dispatchEvent(targetDragOutEvent);
-      targetDragOutEvent.dispose();
     }
     this.activeSubtarget_ = subtarget;
     this.activeTarget_ = null;
   }
 
   // Check if inside target box
-  if (this.isInside_(x, y, this.targetBox_)) {
+  if (this.targetBox_.contains(position)) {
     // Search for target and fire a dragover event if found
-    activeTarget = this.activeTarget_ = this.getTargetFromPosition_(x, y);
+    activeTarget = this.activeTarget_ = this.getTargetFromPosition_(position);
     if (activeTarget && activeTarget.target_) {
       // If a subtargeting function is enabled get the current subtarget
       if (this.subtargetFunction_) {
@@ -637,7 +630,6 @@ goog.fx.AbstractDragDrop.prototype.moveDrag_ = function(event) {
           activeTarget.target_, activeTarget.item_, activeTarget.element_);
       sourceDragOverEvent.subtarget = subtarget;
       this.dispatchEvent(sourceDragOverEvent);
-      sourceDragOverEvent.dispose();
 
       // The event should be dispatched by the target DragDrop so that the
       // target DragDrop can manage these events without having to know what
@@ -647,7 +639,6 @@ goog.fx.AbstractDragDrop.prototype.moveDrag_ = function(event) {
           activeTarget.target_, activeTarget.item_, activeTarget.element_,
           event.clientX, event.clientY, undefined, undefined, subtarget);
       activeTarget.target_.dispatchEvent(targetDragOverEvent);
-      targetDragOverEvent.dispose();
 
     } else if (!activeTarget) {
       // If no target was found create a dummy one so we won't have to iterate
@@ -1057,20 +1048,19 @@ goog.fx.AbstractDragDrop.prototype.maybeCreateDummyTargetForPosition_ =
 /**
  * Returns the target for a given cursor position.
  *
- * @param {number} x Cursor position on the x-axis.
- * @param {number} y Cursor position on the y-axis.
+ * @param {goog.math.Coordinate} position Cursor position.
  * @return {Object} Target for position or null if no target was defined
  *     for the given position.
  * @private
  */
-goog.fx.AbstractDragDrop.prototype.getTargetFromPosition_ = function(x, y) {
+goog.fx.AbstractDragDrop.prototype.getTargetFromPosition_ = function(position) {
   for (var target, i = 0; target = this.targetList_[i]; i++) {
-    if (this.isInside_(x, y, target.box_)) {
+    if (target.box_.contains(position)) {
       if (target.scrollableContainer_) {
         // If we have a scrollable container we will need to make sure
         // we account for clipping of the scroll area
         var box = target.scrollableContainer_.box_;
-        if (this.isInside_(x, y, box)) {
+        if (box.contains(position)) {
           return target;
         }
       } else {
@@ -1090,9 +1080,10 @@ goog.fx.AbstractDragDrop.prototype.getTargetFromPosition_ = function(x, y) {
  * @param {number} y Cursor position on the y-axis.
  * @param {goog.math.Box} box Box to check position against.
  * @return {boolean} Whether the given point is inside {@code box}.
- * @private
+ * @protected
+ * @deprecated Use goog.math.Box.contains.
  */
-goog.fx.AbstractDragDrop.prototype.isInside_ = function(x, y, box) {
+goog.fx.AbstractDragDrop.prototype.isInside = function(x, y, box) {
   return x >= box.left &&
          x < box.right &&
          y >= box.top &&
@@ -1223,12 +1214,6 @@ goog.inherits(goog.fx.DragDropEvent, goog.events.Event);
 
 /** @override */
 goog.fx.DragDropEvent.prototype.disposeInternal = function() {
-  goog.base(this, 'disposeInternal');
-  delete this.dragSource;
-  delete this.dragSourceItem;
-  delete this.dropTarget;
-  delete this.dropTargetItem;
-  delete this.dropTargetElement;
 };
 
 

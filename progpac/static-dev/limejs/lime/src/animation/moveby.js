@@ -76,7 +76,9 @@ lime.animation.MoveBy.prototype.calcDurationFromSpeed_ = function(){
  * @see lime.animation.Animation#update
  */
 lime.animation.MoveBy.prototype.update = function(t, target) {
-    if (this.status_ == 0) return;
+    if (this.status_ == 0) {
+	return;
+    }
     var prop = this.getTargetProp(target);
 
     target.setPosition(

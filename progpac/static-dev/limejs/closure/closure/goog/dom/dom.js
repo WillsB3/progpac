@@ -306,7 +306,8 @@ goog.dom.setProperties = function(element, properties) {
       element.htmlFor = val;
     } else if (key in goog.dom.DIRECT_ATTRIBUTE_MAP_) {
       element.setAttribute(goog.dom.DIRECT_ATTRIBUTE_MAP_[key], val);
-    } else if (goog.string.startsWith(key, 'aria-')) {
+    } else if (goog.string.startsWith(key, 'aria-') ||
+        goog.string.startsWith(key, 'data-')) {
       element.setAttribute(key, val);
     } else {
       element[key] = val;
@@ -327,14 +328,15 @@ goog.dom.DIRECT_ATTRIBUTE_MAP_ = {
   'cellpadding': 'cellPadding',
   'cellspacing': 'cellSpacing',
   'colspan': 'colSpan',
-  'rowspan': 'rowSpan',
-  'valign': 'vAlign',
-  'height': 'height',
-  'width': 'width',
-  'usemap': 'useMap',
   'frameborder': 'frameBorder',
+  'height': 'height',
   'maxlength': 'maxLength',
-  'type': 'type'
+  'role': 'role',
+  'rowspan': 'rowSpan',
+  'type': 'type',
+  'usemap': 'useMap',
+  'valign': 'vAlign',
+  'width': 'width'
 };
 
 
@@ -778,7 +780,11 @@ goog.dom.createTable_ = function(doc, rows, columns, fillWithNbsp) {
 
 
 /**
- * Converts an HTML string into a document fragment.
+ * Converts an HTML string into a document fragment. The string must be
+ * sanitized in order to avoid cross-site scripting. For example
+ * {@code goog.dom.htmlToDocumentFragment('&lt;img src=x onerror=alert(0)&gt;')}
+ * triggers an alert in all browsers, even if the returned document fragment
+ * is thrown away immediately.
  *
  * @param {string} htmlString The HTML string to convert.
  * @return {!Node} The resulting document fragment.
@@ -886,12 +892,15 @@ goog.dom.canHaveChildren = function(node) {
     case goog.dom.TagName.BASE:
     case goog.dom.TagName.BR:
     case goog.dom.TagName.COL:
+    case goog.dom.TagName.COMMAND:
+    case goog.dom.TagName.EMBED:
     case goog.dom.TagName.FRAME:
     case goog.dom.TagName.HR:
     case goog.dom.TagName.IMG:
     case goog.dom.TagName.INPUT:
     case goog.dom.TagName.IFRAME:
     case goog.dom.TagName.ISINDEX:
+    case goog.dom.TagName.KEYGEN:
     case goog.dom.TagName.LINK:
     case goog.dom.TagName.NOFRAMES:
     case goog.dom.TagName.NOSCRIPT:
@@ -899,7 +908,10 @@ goog.dom.canHaveChildren = function(node) {
     case goog.dom.TagName.OBJECT:
     case goog.dom.TagName.PARAM:
     case goog.dom.TagName.SCRIPT:
+    case goog.dom.TagName.SOURCE:
     case goog.dom.TagName.STYLE:
+    case goog.dom.TagName.TRACK:
+    case goog.dom.TagName.WBR:
       return false;
   }
   return true;
@@ -1270,6 +1282,18 @@ goog.dom.compareNodeOrder = function(node1, node2) {
   if (node1.compareDocumentPosition) {
     // 4 is the bitmask for FOLLOWS.
     return node1.compareDocumentPosition(node2) & 2 ? 1 : -1;
+  }
+
+  // Special case for document nodes on IE 7 and 8.
+  if ((node1.nodeType == goog.dom.NodeType.DOCUMENT ||
+      node2.nodeType == goog.dom.NodeType.DOCUMENT) &&
+      goog.userAgent.IE && !goog.userAgent.isVersion(9)) {
+    if (node1.nodeType == goog.dom.NodeType.DOCUMENT) {
+      return -1;
+    }
+    if (node2.nodeType == goog.dom.NodeType.DOCUMENT) {
+      return 1;
+    }
   }
 
   // Process in IE using sourceIndex - we check to see if the first node has
