@@ -6,11 +6,30 @@ goog.require('lime.Scene');
 goog.require('lime.Layer');
 
 goog.require('lime.animation.MoveBy');
-goog.require('lime.animation.Spawn');
 goog.require('lime.animation.Sequence');
 
 
+
 game.inits = function(element, level) {
+
+    this.Turn = function(direction) {
+    lime.animation.Animation.call(this);
+	this.direction = (direction > 0 ? direction : direction+4) % 4
+    };
+    goog.inherits(this.Turn, lime.animation.Animation);
+
+    this.Turn.prototype.update = function(t, target) {
+	if (this.status_ == 0) return;
+
+	var face_list = [
+	    STATIC_URL + 'assets/guy_front.png',
+	    STATIC_URL + 'assets/guy_right.png',
+	    STATIC_URL + 'assets/guy_back.png',
+	    STATIC_URL + 'assets/guy_left.png'
+	]
+	target.setFill(face_list[this.direction])
+    };
+
 
     this.element = element;
     this.level = level;
@@ -63,14 +82,8 @@ game.inits = function(element, level) {
 
     this.guy = undefined;
 
-    var self = this;
-    $.each(this.animations, function(i, move) {
-	goog.events.listen(move, lime.animation.Event.STOP, function(){
-	    self.animate_guy()
-	});
-    });
-
 }
+
 
 game.put_block = function(tile_image, x, y) {
     return new lime.Sprite()
@@ -79,13 +92,6 @@ game.put_block = function(tile_image, x, y) {
 	.setPosition(this.tile_y * y, this.tile_x * x);
 }
 
-game.put_grass = function(x, y) {
-    return this.generate_tile('assets/Grass Block.png', x, y);
-}
-
-game.put_stone_block = function(x, y) {
-    return this.generate_tile('assets/Grass Block.png', x, y);
-}
 
 game.render_shadows = function() {
 
@@ -167,9 +173,6 @@ game.render_shadows = function() {
 
 game.render_static = function() {
 
-    // var target3 = new lime.Layer()
-    // 	.setPosition(this.position_x, this.position_y - (this.tile_h * 0.24));
-
     var self = this;
     $.each(this.level, function(i, line) {
     	$.each(line, function(j, element) {
@@ -224,69 +227,46 @@ game.render_dynamic = function(code) {
 };
 
 game.generate_animation = function(code) {
-
-    var self = this;
-
     var moves_list = [];
     var direction = 0;
 
+    var self = this;
     $.each(code, function(i, element) {
+
 	if (element == 's') {
-	    moves_list.push(self.animations[
+	    var animation = self.animations[
 		(direction > 0 ? direction : direction+4) % 4
-	    ])
+	    ]
 	}
 	if (element == 'r') {
-	    direction--;
+	    var animation = new self.Turn(--direction);
 	}
 	if (element == 'l') {
-	    direction++;
+	    var animation = new self.Turn(++direction);
 	}
+
+	moves_list.push(animation)
+
     });
 
     moves_list = $.map(moves_list, function(element) {
-	return element.setDuration(0.5).enableOptimizations()
+	return element.setDuration(0.3).enableOptimizations()
     })
 
     return moves_list;
 }
 
-game.animate_guy = function() {
-
-    var move = this.animation_steps[++this.animation_counter]
-
-    switch(move) {
-
-    case this.move_down:
-    	this.guy.setFill(STATIC_URL + 'assets/guy_front.png')
-    	break;
-
-    case this.move_right:
-    	this.guy.setFill(STATIC_URL + 'assets/guy_right.png')
-    	break;
-
-    case this.move_up:
-    	this.guy.setFill(STATIC_URL + 'assets/guy_back.png')
-    	break;
-
-    case this.move_left:
-    	this.guy.setFill(STATIC_URL + 'assets/guy_left.png')
-    	break;
-    }
-}
-
 game.animate = function(code) {
     this.animation_steps = this.generate_animation(code);
-    this.animation_counter = 0;
 
     new lime.animation.Sequence(
     	// LimeJS weirdly working on list reference compress animations,
     	// couple hours waster, thanks.
     	$.extend(true, [], this.animation_steps)
     ).addTarget(this.guy).play();
-
-    var counter = 0;
 }
+
+
 
 goog.exportSymbol('game.start', game.start);
 
