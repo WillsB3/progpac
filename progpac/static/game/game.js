@@ -236,22 +236,18 @@ game.generate_animation = function(code) {
 	if (element == 's') {
 	    var animation = self.animations[
 		(direction > 0 ? direction : direction+4) % 4
-	    ]
+	    ].setDuration(0.3)
 	}
 	if (element == 'r') {
-	    var animation = new self.Turn(--direction);
+	    var animation = new self.Turn(--direction).setDuration(0.1)
 	}
 	if (element == 'l') {
-	    var animation = new self.Turn(++direction);
+	    var animation = new self.Turn(++direction).setDuration(0.1)
 	}
 
 	moves_list.push(animation)
 
     });
-
-    moves_list = $.map(moves_list, function(element) {
-	return element.setDuration(0.3).enableOptimizations()
-    })
 
     return moves_list;
 }
