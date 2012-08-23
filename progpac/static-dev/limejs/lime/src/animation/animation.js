@@ -146,7 +146,6 @@ lime.animation.Animation.prototype.stop = function() {
         this.status_ = 0;
         lime.scheduleManager.unschedule(this.step_, this);
 	// debugger;
-	console.log(this);
         this.dispatchEvent({type: lime.animation.Event.STOP});
     }
 };
