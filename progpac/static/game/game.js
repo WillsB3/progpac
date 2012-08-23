@@ -7,6 +7,7 @@ goog.require('lime.Layer');
 
 goog.require('lime.animation.MoveBy');
 goog.require('lime.animation.Sequence');
+goog.require('lime.animation.FadeTo');
 
 
 
@@ -49,6 +50,8 @@ game.inits = function(element, level) {
 	this.move_left = new lime.animation.MoveBy(-this.tile_w, 0)
     ]
 
+
+
     this.element.height(this.tile_x * this.level.length + this.tile_w);
 
     this.director = new lime.Director($('#map').get(0));
@@ -81,9 +84,40 @@ game.inits = function(element, level) {
     this.scene.appendChild(this.game_layer);
 
     this.guy = undefined;
+    this.guy_position = [null, null];
 
+    this.game_matrix = []
+
+    var self = this;
+    goog.events.listen(this.move_down, lime.animation.Event.STOP, function(e){
+	self.guy_position = [self.guy_position[0] + 1, self.guy_position[1]];
+	self.animate_starts();
+    });
+
+    goog.events.listen(this.move_right, lime.animation.Event.STOP, function(e){
+	self.guy_position = [self.guy_position[0], self.guy_position[1] + 1];
+	self.animate_starts();
+    });
+
+    goog.events.listen(this.move_up, lime.animation.Event.STOP, function(e){
+	self.guy_position = [self.guy_position[0] - 1, self.guy_position[1]];
+	self.animate_starts();
+    });
+
+    goog.events.listen(this.move_left, lime.animation.Event.STOP, function(e){
+	self.guy_position = [self.guy_position[0], self.guy_position[1] - 1];
+	self.animate_starts();
+    });
 }
 
+game.animate_starts = function() {
+    var target = this.game_matrix[this.guy_position[0]][this.guy_position[1]];
+
+    if (target) {
+	var animation = new lime.animation.FadeTo(0).setDuration(0.1);
+	target.runAction(animation);
+    }
+}
 
 game.put_block = function(tile_image, x, y) {
     return new lime.Sprite()
@@ -202,19 +236,23 @@ game.render_dynamic = function(code) {
     this.game_layer.removeAllChildren();
 
     var self = this;
+
     $.each(this.level, function(i, line) {
+	self.game_matrix[i] = []
     	$.each(line, function(j, element) {
+	    self.game_matrix[i][j] = null;
 
 	    if (element == 'o') {
-    	    	self.game_layer.appendChild(
-	    	    self.put_block('assets/Star.png', i, j)
-	    	);
-    	    }
+		var element = self.put_block('assets/Star.png', i, j);
 
-	    if (element == 'u') {
+    	    	self.game_layer.appendChild(element);
+		self.game_matrix[i][j] = element;
+
+    	    } else if (element == 'u') {
 		guy = self.put_block('assets/guy_front.png', i, j);
     	    	self.game_layer.appendChild(guy);
-    	    }
+		self.guy_position = [i,j];
+	    }
 
     	});
     });
