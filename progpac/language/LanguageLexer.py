@@ -1,4 +1,4 @@
-# $ANTLR 3.4 Language.g 2012-06-10 19:58:20
+# $ANTLR 3.4 Language.g 2012-08-25 00:53:40
 
 import sys
 from antlr3 import *
@@ -31,6 +31,17 @@ class LanguageLexer(Lexer):
         super(LanguageLexer, self).__init__(input, state)
 
         self.delegates = []
+
+        self.dfa3 = self.DFA3(
+            self, 3,
+            eot = self.DFA3_eot,
+            eof = self.DFA3_eof,
+            min = self.DFA3_min,
+            max = self.DFA3_max,
+            accept = self.DFA3_accept,
+            special = self.DFA3_special,
+            transition = self.DFA3_transition
+            )
 
 
                            
@@ -125,21 +136,27 @@ class LanguageLexer(Lexer):
             _type = NEWLINE
             _channel = DEFAULT_CHANNEL
 
-            # Language.g:32:5: ( ( '\\r' )? '\\n' )
-            # Language.g:32:8: ( '\\r' )? '\\n'
+            # Language.g:32:5: ( ( WS )* '\\n' )
+            # Language.g:32:7: ( WS )* '\\n'
             pass 
-            # Language.g:32:8: ( '\\r' )?
-            alt2 = 2
-            LA2_0 = self.input.LA(1)
+            # Language.g:32:7: ( WS )*
+            while True: #loop2
+                alt2 = 2
+                LA2_0 = self.input.LA(1)
 
-            if (LA2_0 == 13) :
-                alt2 = 1
-            if alt2 == 1:
-                # Language.g:32:8: '\\r'
-                pass 
-                self.match(13)
+                if (LA2_0 == 9 or LA2_0 == 12 or LA2_0 == 32) :
+                    alt2 = 1
 
 
+                if alt2 == 1:
+                    # Language.g:32:7: WS
+                    pass 
+                    self.mWS()
+
+
+
+                else:
+                    break #loop2
 
 
             self.match(10)
@@ -253,27 +270,7 @@ class LanguageLexer(Lexer):
     def mTokens(self):
         # Language.g:1:8: ( T__10 | WS | NEWLINE | STEP_FORWARD | TURN_LEFT | TURN_RIGHT | FUNC_NAME )
         alt3 = 7
-        LA3 = self.input.LA(1)
-        if LA3 == 58:
-            alt3 = 1
-        elif LA3 == 9 or LA3 == 12 or LA3 == 32:
-            alt3 = 2
-        elif LA3 == 10 or LA3 == 13:
-            alt3 = 3
-        elif LA3 == 115:
-            alt3 = 4
-        elif LA3 == 108:
-            alt3 = 5
-        elif LA3 == 114:
-            alt3 = 6
-        elif LA3 == 97 or LA3 == 98 or LA3 == 99 or LA3 == 100 or LA3 == 101 or LA3 == 102 or LA3 == 103 or LA3 == 104 or LA3 == 105 or LA3 == 106 or LA3 == 107 or LA3 == 109 or LA3 == 110 or LA3 == 111 or LA3 == 112 or LA3 == 113 or LA3 == 116 or LA3 == 117 or LA3 == 118 or LA3 == 119 or LA3 == 120 or LA3 == 121 or LA3 == 122:
-            alt3 = 7
-        else:
-            nvae = NoViableAltException("", 3, 0, self.input)
-
-            raise nvae
-
-
+        alt3 = self.dfa3.predict(self.input)
         if alt3 == 1:
             # Language.g:1:10: T__10
             pass 
@@ -326,6 +323,52 @@ class LanguageLexer(Lexer):
 
 
 
+
+
+    # lookup tables for DFA #3
+
+    DFA3_eot = DFA.unpack(
+        u"\2\uffff\1\10\6\uffff"
+        )
+
+    DFA3_eof = DFA.unpack(
+        u"\11\uffff"
+        )
+
+    DFA3_min = DFA.unpack(
+        u"\1\11\1\uffff\1\11\6\uffff"
+        )
+
+    DFA3_max = DFA.unpack(
+        u"\1\172\1\uffff\1\40\6\uffff"
+        )
+
+    DFA3_accept = DFA.unpack(
+        u"\1\uffff\1\1\1\uffff\1\3\1\4\1\5\1\6\1\7\1\2"
+        )
+
+    DFA3_special = DFA.unpack(
+        u"\11\uffff"
+        )
+
+
+    DFA3_transition = [
+        DFA.unpack(u"\1\2\1\3\1\uffff\1\2\23\uffff\1\2\31\uffff\1\1\46\uffff"
+        u"\13\7\1\5\5\7\1\6\1\4\7\7"),
+        DFA.unpack(u""),
+        DFA.unpack(u"\1\2\1\3\1\uffff\1\2\23\uffff\1\2"),
+        DFA.unpack(u""),
+        DFA.unpack(u""),
+        DFA.unpack(u""),
+        DFA.unpack(u""),
+        DFA.unpack(u""),
+        DFA.unpack(u"")
+    ]
+
+    # class definition for DFA #3
+
+    class DFA3(DFA):
+        pass
 
 
  

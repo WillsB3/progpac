@@ -25,11 +25,11 @@ options {
          self.errors.append(message)
 }
 
-WS 
+WS
     : ('\t' | ' ' | '\u000C')+ ;
 
 NEWLINE
-    :  '\r'? '\n' 
+    : WS* '\n'
     ;
 
 STEP_FORWARD
@@ -45,16 +45,16 @@ TURN_RIGHT
     ;
 
 FUNC_NAME
-    : 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' 
-    | 'h' | 'i' | 'j' | 'k' | 'm' | 'n' | 'o' 
-    | 'p' | 'q' | 't' | 'u' | 'v' | 'w' | 'x' 
+    : 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g'
+    | 'h' | 'i' | 'j' | 'k' | 'm' | 'n' | 'o'
+    | 'p' | 'q' | 't' | 'u' | 'v' | 'w' | 'x'
     | 'y' | 'z'
     ;
 
 func_def
     : FUNC_NAME ':' body {
-            self.functions[$FUNC_NAME.text] = $body.tree; 
-     } -> FUNC_NAME body 
+            self.functions[$FUNC_NAME.text] = $body.tree;
+     } -> FUNC_NAME body
     ;
 
 func_call
@@ -62,22 +62,23 @@ func_call
     ;
 
 move
-    : STEP_FORWARD 
-    | TURN_LEFT 
-    | TURN_RIGHT 
-    | func_call 
-    | WS -> 
-    ; 
+    : STEP_FORWARD
+    | TURN_LEFT
+    | TURN_RIGHT
+    | func_call
+    | WS ->
+    ;
 
 body
     : move+
     ;
 
-line: ( body NEWLINE {self.code = $body.tree} )
+
+line: body NEWLINE {self.code = $body.tree}
     | WS? func_def NEWLINE
     | NEWLINE
     ;
 
 prog
     : line+ EOF -> line+
-    ; 
+    ;
