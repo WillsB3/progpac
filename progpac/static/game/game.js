@@ -50,8 +50,6 @@ game.inits = function(element, level) {
 	this.move_left = new lime.animation.MoveBy(-this.tile_w, 0)
     ]
 
-
-
     this.element.height(this.tile_x * this.level.length + this.tile_w);
 
     this.director = new lime.Director($('#map').get(0));
@@ -84,39 +82,30 @@ game.inits = function(element, level) {
     this.scene.appendChild(this.game_layer);
 
     this.guy = undefined;
-    this.guy_position = [null, null];
 
-    this.game_matrix = []
+    this.stars = []
 
     var self = this;
-    goog.events.listen(this.move_down, lime.animation.Event.STOP, function(e){
-	self.guy_position = [self.guy_position[0] + 1, self.guy_position[1]];
-	self.animate_starts();
-    });
-
-    goog.events.listen(this.move_right, lime.animation.Event.STOP, function(e){
-	self.guy_position = [self.guy_position[0], self.guy_position[1] + 1];
-	self.animate_starts();
-    });
-
-    goog.events.listen(this.move_up, lime.animation.Event.STOP, function(e){
-	self.guy_position = [self.guy_position[0] - 1, self.guy_position[1]];
-	self.animate_starts();
-    });
-
-    goog.events.listen(this.move_left, lime.animation.Event.STOP, function(e){
-	self.guy_position = [self.guy_position[0], self.guy_position[1] - 1];
-	self.animate_starts();
-    });
+    $.each(this.animations, function(i, animation) {
+	goog.events.listen(animation, lime.animation.Event.STOP, function(e){
+	    self.animate_starts();
+	});
+    })
 }
 
 game.animate_starts = function() {
-    var target = this.game_matrix[this.guy_position[0]][this.guy_position[1]];
+    var self = this;
+    $.each(this.stars, function(i,star) {
+	var distance = goog.math.Coordinate.distance(
+	    star.getPosition(), self.guy.getPosition()
+	)
 
-    if (target) {
-	var animation = new lime.animation.FadeTo(0).setDuration(0.1);
-	target.runAction(animation);
-    }
+	if (distance < self.tile_w/2) {
+	    star.runAction(
+		new lime.animation.FadeTo(0).setDuration(0.1)
+	    );
+	}
+    });
 }
 
 game.put_block = function(tile_image, x, y) {
@@ -235,23 +224,21 @@ game.render_static = function() {
 game.render_dynamic = function(code) {
     this.game_layer.removeAllChildren();
 
-    var self = this;
+    this.stars = [];
 
+    var self = this;
     $.each(this.level, function(i, line) {
-	self.game_matrix[i] = []
     	$.each(line, function(j, element) {
-	    self.game_matrix[i][j] = null;
 
 	    if (element == 'o') {
-		var element = self.put_block('assets/Star.png', i, j);
+		var star = self.put_block('assets/Star.png', i, j);
 
-    	    	self.game_layer.appendChild(element);
-		self.game_matrix[i][j] = element;
+    	    	self.game_layer.appendChild(star);
+		self.stars.push(star);
 
     	    } else if (element == 'u') {
 		guy = self.put_block('assets/guy_front.png', i, j);
     	    	self.game_layer.appendChild(guy);
-		self.guy_position = [i,j];
 	    }
 
     	});
