@@ -39,7 +39,6 @@ class TestLanguage(unittest.TestCase):
 
         parser = Language(code)
 
-        print parser.errors
         self.assertEqual(parser.code, ['s','s','r','s','r','s'])
         self.assertEqual(parser.errors, [])
 
