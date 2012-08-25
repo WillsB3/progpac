@@ -1,22 +1,24 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div id="home" class="container content">
 
-<div class="hero-unit">
-  <h1>ProgPac</h1>
-  <p>
-    This is a simple hero unit, a simple jumbotron-style component 
-    for calling extra attention to featured content or information.
-    Tagline
-  </p>
+  <div class="hero-unit">
+    <h1>ProgPac</h1>
+    <p>
+      This is a simple hero unit, a simple jumbotron-style component 
+      for calling extra attention to featured content or information.
+      Tagline
+    </p>
 
-  <form method="post" >{% csrf_token %}
-    <input type="text" placeholder="Your name ..."  />
-    
-    <input name="submit" type="submit" value="Tutorial" class="btn btn btn-success btn-large" />
-    <input name="submit" type="submit" value="Start Game" class="btn btn btn-primary btn-large" />
-  
-  </form>
+    <form method="post" >{% csrf_token %}
+      <input type="text" placeholder="Your name ..."  />
+      
+      <input name="submit" type="submit" value="Tutorial" class="btn btn btn-success btn-large" />
+      <input name="submit" type="submit" value="Start Game" class="btn btn btn-primary btn-large" />
+      
+    </form>
+  </div>
+
 </div>
-
 {% endblock %}
