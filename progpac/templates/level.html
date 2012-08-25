@@ -26,6 +26,12 @@
     </div>
     
     <div class="span4 editor">
+      
+      <div class="alert hide alert-error">
+	<h4>Oh snap!</h4>
+	<span class="message"></span>
+      </div>
+
       <form class="well" method="post">
 	{% csrf_token %}
 	{{ form.text }}
@@ -44,8 +50,6 @@
       </form>
     </div>
   </div>
-
-  <pre></pre>
 
 </div>
 {% endblock %}

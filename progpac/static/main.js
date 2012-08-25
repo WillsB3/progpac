@@ -27,17 +27,19 @@ $(function() {
             setup_code_counter();
 	});
 
+	$('textarea').height($('#map').height() - 125);
+
 	$('form').ajaxForm({
+	    beforeSubmit: function() {
+		$('.alert-error').hide();
+	    },
     	    success: function(response) {
 
     		if (response.errors.length) {
-    		    // $('.error').show();
-    		    // $('.error .message').text(response.errors.join());
+    		    $('.alert-error').show();
+    		    $('.alert-error .message').text(response.errors.join());
 
     		} else {
-
-		    console.log(response.code);
-		    console.log(response.success);
 		    if (response.success) {
 			game.animate_post = function() {
 
