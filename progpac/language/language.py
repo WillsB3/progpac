@@ -19,9 +19,7 @@ class Bug(object):
         return self.direction % 4
 
     def move(self, move):
-        if not self.dots:
-            return "@"
-        elif move == "s":
+        if move == "s":
             return self.step_forward()
         elif move == "r":
             return self.turn_right()
@@ -68,8 +66,10 @@ class Bug(object):
         for step in self.code:
             bug_step = self.move(step)
             code.append(bug_step)
-            if bug_step == '@':
-                return code
+
+            if not self.dots:
+                return code + ['@']
+
         return code
 
 class Language(object):
