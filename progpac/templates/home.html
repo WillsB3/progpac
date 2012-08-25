@@ -9,10 +9,14 @@
     for calling extra attention to featured content or information.
     Tagline
   </p>
-  <p>
-    <a href="{{ tutorial_levels.0.get_absolute_url }}" class="btn btn btn-success btn-large">Tutorial</a>
-    <a class="btn btn-primary btn-large">Start Game</a>
-  </p>
+
+  <form method="post" >{% csrf_token %}
+    <input type="text" placeholder="Your name ..."  />
+    
+    <input name="submit" type="submit" value="Tutorial" class="btn btn btn-success btn-large" />
+    <input name="submit" type="submit" value="Start Game" class="btn btn btn-primary btn-large" />
+  
+  </form>
 </div>
 
 {% endblock %}

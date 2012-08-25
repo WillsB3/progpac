@@ -1,6 +1,4 @@
-import json
-
-from django.views.generic import FormView, RedirectView, TemplateView, View
+from django.views.generic import FormView, TemplateView, View
 from django.utils import simplejson as json
 from django.http import HttpResponseRedirect, HttpResponse
 
@@ -11,17 +9,16 @@ from progpac.language import language
 
 class Home(TemplateView):
     template_name = "home.html"
-    # permanent = False
 
-    # def get_redirect_url(self, **kwargs):
-    #     last_level_hash = self.request.session.get('last_level_hash', None)
-    #     if last_level_hash:
-    #         level = models.Level.objects.get(hash=last_level_hash)
-    #     else:
-    #         level = models.Level.objects.all()[:1].get()
-    #         self.request.session['last_level_hash'] = level.hash
+    def post(self, *args, **kwargs):
+        self.request.session['username'] = self.request.POST.get('username')
 
-    #     return level.get_absolute_url()
+        if self.request.POST.get('submit') == 'Tutorial':
+            levels = models.Level.objects.filter(tier__name="Tutorial")
+        elif self.request.POST.get('submit') == 'Start Game':
+            levels = models.Level.objects.exclude(tier__name="Tutorial")
+
+        return HttpResponseRedirect(levels[0].get_absolute_url())
 
 
 class Level(FormView):
