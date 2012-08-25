@@ -280,11 +280,20 @@ game.generate_animation = function(code) {
 game.animate = function(code) {
     this.animation_steps = this.generate_animation(code);
 
-    new lime.animation.Sequence(
+    var animation = new lime.animation.Sequence(
     	// LimeJS weirdly working on list reference compress animations,
     	// couple hours waster, thanks.
     	$.extend(true, [], this.animation_steps)
-    ).addTarget(this.guy).play();
+    );
+    animation.addTarget(this.guy).play();
+
+    var self = this;
+    goog.events.listen(animation, lime.animation.Event.STOP, function(e){
+	if (self.animate_post) {
+	    self.animate_post();
+	}
+    });
+
 }
 
 

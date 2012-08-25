@@ -2,86 +2,50 @@
 
 {% block content %}
 
-{% if level_next %}
 <div class="modal hide fade">
-  <form method="post" action="{% url result_save %}">
-    {% csrf_token %}
-    <div class="modal-header">
-      <a href="#" class="close">&times;</a>
-      <h3>Great Success! You did it ... damn it.</h3>
-    </div>
-    <div class="modal-body">
-      <p>
-        We will  put your name into  Result page. If you  will give us
-        email as well. We might  send you information if somebody will
-        beat  your result  up.  In  other case,  both  fields are  not
-        required.
-      </p>
-      <fieldset>
-        {{ result_form.program }}
-        {{ result_form.level }}
-        <div class="clearfix">
-          {{ result_form.username.label_tag }}
-          <div class="input">
-            {{ result_form.username }}
-          </div>
-        </div>
-        <div class="clearfix">
-          {{ result_form.email.label_tag }}
-          <div class="input">
-            {{ result_form.email }}
-          </div>
-        </div>
-      </fieldset>
-    </div>
-    <div class="modal-footer">
-      <input type="submit" value="Next Level" class="btn primary"/>
-      <a href="#" class="btn secondary">
-        Stay Here
-      </a>
-    </div>
-  </form>
-</div>
-{% endif %}
-
-
-<div class="row">
-  
-  <div class="span8">
-    <div id="map" style="border: 2px solid; padding-left: 4px"></div>
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h3>Great Success!</h3>
   </div>
-  
-  <div class="span4 editor">
-    <form class="well" method="post">
-      {% csrf_token %}
-      {{ form.text }}
+  <div class="modal-body">
+    <p>
+      We argoing to put your name one the results page.
+    </p>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn" data-dismiss="modal">Stay here</a>
+    <a href="#" class="next-level btn btn-primary">Next Level</a>
+  </div>
+</div>
 
-      <div class="form-actions">
-	<span class="code-counter">
-          <span class="code-size">
-	  </span> /<span class="code-maxsize">
-	    {{ level.maxsize }}
+<div id="level" class="container content">
+
+  <div class="row">
+    <div class="span8">
+      <div id="map" style="border: 2px solid; padding-left: 4px"></div>
+    </div>
+    
+    <div class="span4 editor">
+      <form class="well" method="post">
+	{% csrf_token %}
+	{{ form.text }}
+
+	<div class="form-actions">
+	  <span class="code-counter">
+            <span class="code-size">
+	    </span> /<span class="code-maxsize">
+	      {{ level.maxsize }}
+	    </span>
 	  </span>
-	</span>
 
-	<input name="submit" type="submit" class="btn" value="Debug">
-	<input name="submit" type="submit" class="btn btn-primary" value="Move it!">
-      </div>
-    </form>
+	  <input name="submit" type="submit" class="btn" value="Debug">
+	  <input name="submit" type="submit" class="btn btn-primary" value="Move it!">
+	</div>
+      </form>
+    </div>
   </div>
-  
+
+  <pre></pre>
+
 </div>
-
-{% if debug_code1 %}
-<pre>{{ debug_code1 }}</pre>
-{% endif %}
-
-{% if debug_code2 %}
-<pre>{{ debug_code2 }}</pre>
-{% endif %}
-
-{% if debug_ast %}
-<pre>{{ debug_ast }}</pre>
-{% endif %}
-
 {% endblock %}
