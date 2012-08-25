@@ -32,7 +32,7 @@ class Bug(object):
 
     def step_forward(self):
         moves = (
-            (-1, 0), (0, 1), (1, 0), (0, -1)
+            (1, 0), (0, -1), (-1, 0), (0, 1)
         )
         next_move = moves[self._real_direction()]
         next_step = self.level.get(
