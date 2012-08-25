@@ -107,7 +107,7 @@ class Level(models.Model):
     @property
     def next(self):
         n = False
-        for level in Level.objects.all():
+        for level in Level.objects.filter(tier=self.tier):
             if n == True:
                 return level
             if level == self:
