@@ -51,56 +51,19 @@ class Level(FormView):
         code = "".join(bug_steps)
 
         context = {
-            # "form": form,
             "errors": parser.errors,
-            "code": code
+            "code": code,
+            'success': False
         }
 
         if code.find("@") > -1 and parser.program_length <= self.level.maxsize:
-            context['level_next'] = self.level.next
-            initial=dict(
-                level=self.level,
-                program=form.cleaned_data['text'],
-                email=self.request.session.get("email", "someone@somewhere.com"),
-                username=self.request.session.get("username", "someone")
-            )
-            context['result_form'] = forms.ResultForm(initial=initial)
-            self.request.session['last_level_hash'] = self.level.next.hash
+            context['success'] = True
+            next_level = self.level.next
 
-        if self.request.POST['submit'] == 'Debug':
-            context.update({
-                "debug_code1": code,
-            })
+            if next_level:
+                context['next_level'] = next_level.get_absolute_url()
+
         return HttpResponse(json.dumps(context), 'application/json')
-
-
-class ResultSave(View):
-
-    def post(self, request):
-        form = forms.ResultForm(request.POST)
-
-        if form.is_valid():
-
-            self.request.session["email"] = form.cleaned_data['email']
-            self.request.session["username"] = form.cleaned_data['username']
-
-            level = form.cleaned_data['level']
-
-            parser = language.Language(
-                form.cleaned_data['program']
-            )
-            bug = language.Bug(parser.code, level)
-            bug_steps = bug.walk()
-
-            code = "".join(bug_steps)
-
-            if code.find("@") > -1 and parser.program_length <= level.maxsize:
-                result = form.save(commit=False)
-                result.program_length = parser.program_length
-                result.save()
-                return HttpResponseRedirect(level.next.get_absolute_url())
-
-        return HttpResponseRedirect(level.get_absolute_url())
 
 
 class Help(TemplateView):
