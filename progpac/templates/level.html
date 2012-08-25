@@ -4,8 +4,8 @@
 
 {% if level_next %}
 <div class="modal hide fade">
-  <form method="POST" action="{% url result_save %}">
-     {% csrf_token %}
+  <form method="post" action="{% url result_save %}">
+    {% csrf_token %}
     <div class="modal-header">
       <a href="#" class="close">&times;</a>
       <h3>Great Success! You did it ... damn it.</h3>
