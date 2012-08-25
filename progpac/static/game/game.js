@@ -302,12 +302,14 @@ goog.exportSymbol('game.start', game.start);
 
 $(document).ready(function() {
 
-    game.inits($('#map'), LEVEL);
+    if (LEVEL) {
+	game.inits($('#map'), LEVEL);
 
-    game.render_static();
-    game.render_dynamic();
+	game.render_static();
+	game.render_dynamic();
 
-    game.director.replaceScene(game.scene);
-    game.director.makeMobileWebAppCapable();
+	game.director.replaceScene(game.scene);
+	game.director.makeMobileWebAppCapable();
+    }
 
 });
