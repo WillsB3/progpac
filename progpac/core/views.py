@@ -9,18 +9,19 @@ from progpac.core import models
 from progpac.language import language
 
 
-class Home(RedirectView):
-    permanent = False
+class Home(TemplateView):
+    template_name = "home.html"
+    # permanent = False
 
-    def get_redirect_url(self, **kwargs):
-        last_level_hash = self.request.session.get('last_level_hash', None)
-        if last_level_hash:
-            level = models.Level.objects.get(hash=last_level_hash)
-        else:
-            level = models.Level.objects.all()[:1].get()
-            self.request.session['last_level_hash'] = level.hash
+    # def get_redirect_url(self, **kwargs):
+    #     last_level_hash = self.request.session.get('last_level_hash', None)
+    #     if last_level_hash:
+    #         level = models.Level.objects.get(hash=last_level_hash)
+    #     else:
+    #         level = models.Level.objects.all()[:1].get()
+    #         self.request.session['last_level_hash'] = level.hash
 
-        return level.get_absolute_url()
+    #     return level.get_absolute_url()
 
 
 class Level(FormView):
