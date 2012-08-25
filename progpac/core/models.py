@@ -58,12 +58,21 @@ class Bug(object):
         return "r"
 
 
+class Tier(models.Model):
+    name = models.CharField(max_length=64)
+
+    def __unicode__(self):
+        return self.name
+
+
 class Level(models.Model):
+    tier = models.ForeignKey('Tier')
     hash = models.CharField(max_length=40, unique=True, db_index=True)
     name = models.CharField(max_length=64)
     content = models.TextField()
     points = models.IntegerField()
     maxsize = models.IntegerField()
+
 
     def __init__(self, *args, **kwargs):
         super(Level, self).__init__(*args, **kwargs)
@@ -126,6 +135,7 @@ class Level(models.Model):
         except IndexError:
             return None
 
+
 class Result(models.Model):
     level = models.ForeignKey('Level')
     program = models.TextField()
@@ -137,7 +147,6 @@ class Result(models.Model):
 
     def gravatar(self):
         if self.email:
-            import hashlib
             return hashlib.md5(self.email).hexdigest()
         return ""
 

@@ -18,16 +18,16 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script src="{{ STATIC_URL }}less.js" type="text/javascript"></script>
 
-    
     <script src="{{ STATIC_URL }}limejs/closure/closure/goog/base.js" type="text/javascript"></script>
     <script src="{{ STATIC_URL }}game/game.js" type="text/javascript"></script>
 
+    <script src="{{ STATIC_URL }}bootstrap/js/bootstrap-dropdown.js" type="text/javascript"></script>
     <script src="{{ STATIC_URL }}bootstrap/js/bootstrap-modal.js" type="text/javascript"></script>
     <script src="{{ STATIC_URL }}jquery.form.js" type="text/javascript"></script>
     <script src="{{ STATIC_URL }}main.js" type="text/javascript"></script>
-
+    
     <script type="text/javascript">
-      var LEVEL = {{ level_json|safe }};
+      var LEVEL = {{ level_json|safe|default:"null" }};
       var CODE = "{{ code|default:"" }}";
 
       var STATIC_URL = "{{ STATIC_URL }}";
@@ -45,11 +45,27 @@
 
 	    <li class="{% active "level" %} dropdown">
 	      <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-		{{ level.name|capfirst|default:"Levels" }}
+		Tutorial 
 		<b class="caret"></b>
 	      </a>
 	      <ul class="dropdown-menu">
-		{% for level in previous_levels %}
+		{% for level in tutorial_levels %}
+                <li>
+                  <a href="{{ level.get_absolute_url }}">
+                    {{ level.name|capfirst }}
+                  </a>
+                </li>
+                {% endfor %}
+	      </ul>
+	    </li>
+
+	    <li class="{% active "level" %} dropdown">
+	      <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+		Game 
+		<b class="caret"></b>
+	      </a>
+	      <ul class="dropdown-menu">
+		{% for level in game_levels %}
                 <li>
                   <a href="{{ level.get_absolute_url }}">
                     {{ level.name|capfirst }}
