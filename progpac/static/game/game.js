@@ -256,7 +256,7 @@ game.generate_animation = function(code) {
     var direction = 0;
 
     var self = this;
-    $.each(code, function(i, element) {
+    $.each(code.replace("@",""), function(i, element) {
 
 	if (element == 's') {
 	    var animation = self.animations[
@@ -280,11 +280,12 @@ game.generate_animation = function(code) {
 game.animate = function(code) {
     this.animation_steps = this.generate_animation(code);
 
-    var animation = new lime.animation.Sequence(
-    	// LimeJS weirdly working on list reference compress animations,
-    	// couple hours waster, thanks.
-    	$.extend(true, [], this.animation_steps)
-    );
+    if (this.animation_steps.length == 1) {
+	var animation = this.animation_steps[0];
+    } else {
+	var animation = new lime.animation.Sequence(this.animation_steps)
+    }
+
     animation.addTarget(this.guy).play();
 
     var self = this;
