@@ -115,6 +115,7 @@ STATIC_URL = 'http://s3.amazonaws.com/%s/' % AWS_STORAGE_BUCKET_NAME
 STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
 PIPELINE_YUI_BINARY = '/usr/bin/yui-compressor'
 PIPELINE_LESS_BINARY = os.path.join(SITE_ROOT, 'node_modules/less/bin/lessc')
+PIPELINE_DISABLE_WRAPPER = False
 PIPELINE = True
 
 PIPELINE_JS = {
