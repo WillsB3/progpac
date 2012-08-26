@@ -116,7 +116,7 @@ STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
 
 PIPELINE_YUI_BINARY = '/usr/bin/yui-compressor'
 PIPELINE_LESS_BINARY = os.path.join(SITE_ROOT, 'node_modules/less/bin/lessc')
-PIPELINE = True
+PIPELINE = False
 
 PIPELINE_JS = {
     'base': {
