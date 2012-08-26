@@ -1,4 +1,5 @@
 import os
+import dj_database_url
 
 SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
 
@@ -11,12 +12,7 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(SITE_ROOT, 'data/development.db')
-    }
-}
+DATABASES = {'default': dj_database_url.config(default='postgres://localhost')}
 
 TIME_ZONE = 'Europe/London'
 LANGUAGE_CODE = 'en-us'
