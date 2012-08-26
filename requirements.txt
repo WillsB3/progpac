@@ -3,9 +3,11 @@ Fabric==1.3.4
 progpac/language/run_time/
 argparse==1.2.1
 boto==2.5.2
+dj-database-url==0.2.1
 django-appconf==0.5
 django-compressor==1.2
 django-storages==1.1.4
+psycopg2==2.4.5
 pycrypto==2.6
 python-dateutil==2.1
 six==1.1.0
