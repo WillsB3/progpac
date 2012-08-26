@@ -34,6 +34,7 @@ ADMIN_MEDIA_PREFIX = '/static/admin/'
 
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'compressor.finders.CompressorFinder',
 )
 
@@ -119,10 +120,12 @@ STATICFILES_DIRS = (
     os.path.join(SITE_ROOT, 'static'),
 )
 
-# COMPRESS_OFFLINE = True
+COMPRESS_ENABLED = True
+COMPRESS_OFFLINE = True
+
 COMPRESS_PRECOMPILERS = (
-    ('text/less', 'lessc {infile} {outfile}'),
-    ('limejs/javascript', './progpac/static-dev/limejs/bin/lime.py build game')
+    ('text/less', './node_modules/less/bin/lessc {infile}'),
+    ('application/javascript', './static-dev/limejs/bin/lime.py build game')
 )
 
 try:
