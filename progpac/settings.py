@@ -25,7 +25,6 @@ USE_L10N = True
 MEDIA_ROOT = ''
 MEDIA_URL = ''
 
-
 ADMIN_MEDIA_PREFIX = '/static/admin/'
 
 STATICFILES_FINDERS = (
@@ -107,19 +106,21 @@ AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = 'progpac'
 
-STATIC_ROOT = os.path.join(SITE_ROOT, '.static')
-STATIC_URL = 'http://s3.amazonaws.com/%s/CACHE/' % AWS_STORAGE_BUCKET_NAME
-
-STATICFILES_DIRS = (
-    os.path.join(SITE_ROOT, 'static'),
-)
-
 COMPRESS_ENABLED = True
 COMPRESS_OFFLINE = True
+COMPRESS_ROOT = os.path.join(SITE_ROOT, 'static-live')
 
 COMPRESS_PRECOMPILERS = (
     ('text/less', './node_modules/less/bin/lessc {infile}'),
-    ('application/javascript', './static-dev/limejs/bin/lime.py build game')
+    ('application/javascript', './static/limejs/bin/lime.py build game')
+)
+
+STATIC_ROOT = os.path.join(SITE_ROOT, '.static')
+STATIC_URL = 'http://s3.amazonaws.com/%s/' % AWS_STORAGE_BUCKET_NAME
+STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+STATICFILES_DIRS = (
+    os.path.join(SITE_ROOT, 'static'),
+    COMPRESS_ROOT
 )
 
 try:
