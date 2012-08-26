@@ -297,7 +297,9 @@ game.animate = function(code) {
 
 }
 
-
+game.post_render = function() {
+    $('.editor textarea').height(this.element.height() - 125);
+}
 
 goog.exportSymbol('game.start', game.start);
 
@@ -308,6 +310,7 @@ $(document).ready(function() {
 
 	game.render_static();
 	game.render_dynamic();
+	game.post_render();
 
 	game.director.replaceScene(game.scene);
 	game.director.makeMobileWebAppCapable();

@@ -27,8 +27,6 @@ $(function() {
             setup_code_counter();
 	});
 
-	$('textarea').height($('#map').height() - 125);
-
 	$('form').ajaxForm({
 	    beforeSubmit: function() {
 		$('.alert-error').hide();
