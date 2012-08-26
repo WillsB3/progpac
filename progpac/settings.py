@@ -115,7 +115,7 @@ STATIC_URL = 'http://s3.amazonaws.com/%s/' % AWS_STORAGE_BUCKET_NAME
 STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
 PIPELINE_YUI_BINARY = '/usr/bin/yui-compressor'
 PIPELINE_LESS_BINARY = os.path.join(SITE_ROOT, 'node_modules/less/bin/lessc')
-PIPELINE_DISABLE_WRAPPER = False
+PIPELINE_DISABLE_WRAPPER = True
 PIPELINE = True
 
 PIPELINE_JS = {
@@ -130,15 +130,7 @@ PIPELINE_JS = {
         ),
         'output_filename': 'live.js',
     },
-    'game': {
-        'source_filenames': (
-            'limejs/closure/closure/goog/base.js',
-            'game/game.js',
-        ),
-        'output_filename': 'game.js',
-    },
 }
-
 
 PIPELINE_CSS = {
     'base': {

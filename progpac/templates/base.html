@@ -12,7 +12,13 @@
     {% compressed_css 'base' %}
     
     {% compressed_js 'base' %}
-    {% compressed_js 'game' %}
+    
+    {% if debug %}
+    <script type="text/javascript" src="{{ STATIC_URL }}limejs/closure/closure/goog/base.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}game/game.js"></script>
+    {% else %}
+    <script type="text/javascript" src="{{ STATIC_URL }}game/game-min.js" charset="utf-8"></script>
+    {% endif %}
         
     <script type="text/javascript">
       var LEVEL = {{ level_json|safe|default:"null" }};
