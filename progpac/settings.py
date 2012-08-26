@@ -28,9 +28,8 @@ MEDIA_URL = ''
 ADMIN_MEDIA_PREFIX = '/static/admin/'
 
 STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'compressor.finders.CompressorFinder',
+    'staticfiles.finders.FileSystemFinder',
+    'staticfiles.finders.AppDirectoriesFinder'
 )
 
 TEMPLATE_LOADERS = (
@@ -76,10 +75,10 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.admin',
     'django.contrib.auth',
-    'django.contrib.staticfiles',
 
     'storages',
-    'compressor',
+    'staticfiles',
+    'pipeline',
 
     'progpac.core',
 )
@@ -106,24 +105,61 @@ AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = 'progpac'
 
-COMPRESS_ENABLED = True
-COMPRESS_OFFLINE = True
-COMPRESS_ROOT = os.path.join(SITE_ROOT, 'static-live')
-
-COMPRESS_PRECOMPILERS = (
-    ('text/less', './node_modules/less/bin/lessc {infile}'),
-    ('application/javascript', './static/limejs/bin/lime.py build game')
-)
-
 STATIC_ROOT = os.path.join(SITE_ROOT, '.static')
-STATIC_URL = 'http://s3.amazonaws.com/%s/' % AWS_STORAGE_BUCKET_NAME
-STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 STATICFILES_DIRS = (
     os.path.join(SITE_ROOT, 'static'),
-    COMPRESS_ROOT
 )
+
+STATIC_URL = 'http://s3.amazonaws.com/%s/' % AWS_STORAGE_BUCKET_NAME
+
+STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
+
+PIPELINE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+PIPELINE_YUI_BINARY = '/usr/bin/yui-compressor'
+PIPELINE_LESS_BINARY = os.path.join(SITE_ROOT, 'node_modules/less/bin/lessc')
+PIPELINE = True
+
+PIPELINE_JS = {
+    'base': {
+        'source_filenames': (
+            'jquery-1.8.0.min.js',
+            'jquery.form.js',
+            'less.js',
+            'bootstrap/js/bootstrap-dropdown.js',
+            'bootstrap/js/bootstrap-modal.js',
+            'main.js'
+        ),
+        'output_filename': 'live.js',
+    },
+    'game': {
+        'source_filenames': (
+            'limejs/closure/closure/goog/base.js',
+            'game/game.js',
+        ),
+        'output_filename': 'game.js',
+    },
+}
+
+
+PIPELINE_CSS = {
+    'base': {
+        'source_filenames': (
+            'bootstrap/less/bootstrap.less',
+            'main.less',
+        ),
+        'output_filename': 'live.css',
+    },
+}
+
+PIPELINE_COMPILERS = (
+    'pipeline.compilers.less.LessCompiler',
+    'progpac.core.complie.GameCompiler',
+)
+
 
 try:
     from local_settings import *
 except ImportError:
     pass
+
+
