@@ -29,6 +29,7 @@ $(function() {
 
 	$('form').ajaxForm({
 	    beforeSubmit: function() {
+		game.render_dynamic();
 		$('.alert-error').hide();
 	    },
     	    success: function(response) {
