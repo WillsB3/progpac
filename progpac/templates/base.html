@@ -31,7 +31,6 @@
     <script type="text/javascript" src="{{ STATIC_URL }}game/game-min.js" charset="utf-8"></script>
     {% endif %}
         
-    
     <script type="text/javascript">
       var LEVEL = {{ level_json|safe|default:"null" }};
       var CODE = "{{ code|default:"" }}";
@@ -42,55 +41,58 @@
   </head>
 
   <body>
-    <div class="navbar">
-      <div class="navbar-inner">
-	<div class="container">
-	  <a class="brand" href="/">ProgPac</a>
 
-	  <ul class="nav">
+    <div class="container">
+      <div class="navbar">
+    	<div class="navbar-inner">
+    	  <div class="container">
+    	    <a class="brand" href="/">ProgPac</a>
 
-	    <li class="{% active "level" %} dropdown">
-	      <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-		Tutorial 
-		<b class="caret"></b>
-	      </a>
-	      <ul class="dropdown-menu">
-		{% for level in tutorial_levels %}
-                <li>
-                  <a href="{{ level.get_absolute_url }}">
-                    {{ level.name|capfirst }}
-                  </a>
-                </li>
-                {% endfor %}
-	      </ul>
-	    </li>
+    	    <ul class="nav">
 
-	    <li class="{% active "level" %} dropdown">
-	      <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-		Game 
-		<b class="caret"></b>
-	      </a>
-	      <ul class="dropdown-menu">
-		{% for level in game_levels %}
-                <li>
-                  <a href="{{ level.get_absolute_url }}">
-                    {{ level.name|capfirst }}
-                  </a>
-                </li>
-                {% endfor %}
-	      </ul>
-	    </li>
+    	      <li class="{% active "level" %} dropdown">
+    		<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+    		  Tutorial
+    		  <b class="caret"></b>
+    		</a>
+    		<ul class="dropdown-menu">
+    		  {% for level in tutorial_levels %}
+                  <li>
+                    <a href="{{ level.get_absolute_url }}">
+                      {{ level.name|capfirst }}
+                    </a>
+                  </li>
+                  {% endfor %}
+    		</ul>
+    	      </li>
 
-	    <li class="{% active "help" %}">
-	      <a href="{% url help %}">Help</a>
-	    </li>
+    	      <li class="{% active "level" %} dropdown">
+    		<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+    		  Game
+    		  <b class="caret"></b>
+    		</a>
+    		<ul class="dropdown-menu">
+    		  {% for level in game_levels %}
+                  <li>
+                    <a href="{{ level.get_absolute_url }}">
+                      {{ level.name|capfirst }}
+                    </a>
+                  </li>
+                  {% endfor %}
+    		</ul>
+    	      </li>
 
-	    <li class="{% active "results" %}">
-	      <a href="{% url results %}">Results</a>
-	    </li>
+    	      <li class="{% active "help" %}">
+    		<a href="{% url help %}">Help</a>
+    	      </li>
 
-	  </ul>
-	</div>
+    	      <li class="{% active "results" %}">
+    		<a href="{% url results %}">Results</a>
+    	      </li>
+
+    	    </ul>
+    	  </div>
+    	</div>
       </div>
     </div>
 
