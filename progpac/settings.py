@@ -118,7 +118,7 @@ COMPRESS_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 COMPRESS_ENABLED = True
 COMPRESS_OFFLINE = True
 COMPRESS_PRECOMPILERS = (
-    ('text/less', '%s {infile}' % os.path.join(SITE_ROOT,'./node_modules/less/bin/lessc')),
+    ('text/less', '%s {infile} {outfile}' % os.path.join(SITE_ROOT,'./node_modules/less/bin/lessc')),
 )
 
 try:
