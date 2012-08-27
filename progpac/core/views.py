@@ -57,6 +57,13 @@ class Level(FormView):
         }
 
         if code.find("@") > -1 and parser.program_length <= self.level.maxsize:
+
+            if not self.request.session.has_key('levels_done'):
+                self.request.session['levels_done'] = []
+
+            if self.level.hash not in self.request.session['levels_done']:
+                self.request.session['levels_done'].append(self.level)
+
             context['success'] = True
             next_level = self.level.next
 

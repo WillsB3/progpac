@@ -59,8 +59,11 @@
     		  {% for level in tutorial_levels %}
                   <li>
                     <a href="{{ level.get_absolute_url }}">
-                      {{ level.name|capfirst }}
-                    </a>
+                      {{ level.name|capfirst }} 
+		      {% if level in request.session.levels_done %}
+		      <i class="icon-star-empty"></i>
+		      {% endif %}
+                    </a> 
                   </li>
                   {% endfor %}
     		</ul>
@@ -76,6 +79,9 @@
                   <li>
                     <a href="{{ level.get_absolute_url }}">
                       {{ level.name|capfirst }}
+		      {% if level in request.session.levels_done %}
+		      <i class="icon-star-empty"></i>
+		      {% endif %}
                     </a>
                   </li>
                   {% endfor %}
@@ -95,7 +101,7 @@
     	</div>
       </div>
     </div>
-
+    
     {% block content %}{% endblock %}
     
   </body>
