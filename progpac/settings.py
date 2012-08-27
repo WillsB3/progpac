@@ -28,8 +28,9 @@ MEDIA_URL = ''
 ADMIN_MEDIA_PREFIX = '/static/admin/'
 
 STATICFILES_FINDERS = (
-    'staticfiles.finders.FileSystemFinder',
-    'staticfiles.finders.AppDirectoriesFinder'
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder'
 )
 
 TEMPLATE_LOADERS = (
@@ -75,10 +76,10 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.staticfiles',
 
     'storages',
-    'staticfiles',
-    'pipeline',
+    "compressor",
 
     'progpac.core',
 )
@@ -111,42 +112,14 @@ STATICFILES_DIRS = (
 )
 
 STATIC_URL = 'http://s3.amazonaws.com/%s/' % AWS_STORAGE_BUCKET_NAME
+STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 
-STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
+COMPRESS_ENABLED = True
+COMPRESS_OFFLINE = True
 
-PIPELINE_YUI_BINARY = '/usr/bin/yui-compressor'
-PIPELINE_LESS_BINARY = os.path.join(SITE_ROOT, 'node_modules/less/bin/lessc')
-PIPELINE = False
-
-PIPELINE_JS = {
-    'base': {
-        'source_filenames': (
-            'jquery-1.8.0.min.js',
-            'jquery.form.js',
-            'less.js',
-            'bootstrap/js/bootstrap-dropdown.js',
-            'bootstrap/js/bootstrap-modal.js',
-            'main.js'
-        ),
-        'output_filename': 'live.js',
-    },
-}
-
-PIPELINE_CSS = {
-    'base': {
-        'source_filenames': (
-            'bootstrap/less/bootstrap.less',
-            'main.less',
-        ),
-        'output_filename': 'live.css',
-    },
-}
-
-PIPELINE_COMPILERS = (
-    'pipeline.compilers.less.LessCompiler',
-    'progpac.core.complie.GameCompiler',
+COMPRESS_PRECOMPILERS = (
+    ('text/less', './node_modules/less/bin/lessc {infile}'),
 )
-
 
 try:
     from local_settings import *
