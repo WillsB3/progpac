@@ -3,7 +3,7 @@ import dj_database_url
 
 SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -115,10 +115,10 @@ STATIC_URL = 'http://s3.amazonaws.com/%s/' % AWS_STORAGE_BUCKET_NAME
 
 STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 COMPRESS_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-COMPRESS_ENABLED = not DEBUG
-COMPRESS_PRECOMPILERS = (
-    ('text/less', '%s {infile}' % os.path.join(SITE_ROOT,'./node_modules/less/bin/lessc')),
-)
+# COMPRESS_ENABLED = not DEBUG
+# COMPRESS_PRECOMPILERS = (
+#     ('text/less', '%s {infile}' % os.path.join(SITE_ROOT,'./node_modules/less/bin/lessc')),
+# )
 
 try:
     from local_settings import *
