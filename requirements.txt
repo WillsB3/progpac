@@ -5,9 +5,13 @@ argparse==1.2.1
 boto==2.5.2
 dj-database-url==0.2.1
 django-appconf==0.5
-django-pipeline==1.2.15
+django-compressor==1.2
 django-staticfiles==1.2.1
-django-storages==1.1.4
+django-storages==1.1.5
+gunicorn==0.14.6
+gunicorn==0.14.6
+ipdb==0.6.1
+ipython==0.13
 psycopg2==2.4.5
 pycrypto==2.6
 python-dateutil==2.1
