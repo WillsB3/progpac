@@ -113,17 +113,11 @@ STATICFILES_DIRS = (
 
 STATIC_URL = 'http://s3.amazonaws.com/%s/' % AWS_STORAGE_BUCKET_NAME
 
-STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-COMPRESS_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 COMPRESS_ENABLED = True
 COMPRESS_OFFLINE = True
 COMPRESS_PRECOMPILERS = (
     ('text/less', '%s {infile} {outfile}' % os.path.join(SITE_ROOT,'./node_modules/less/bin/lessc')),
 )
-
-try:
-    from local_settings import *
-except ImportError:
-    pass
 
 
