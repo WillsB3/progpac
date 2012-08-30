@@ -121,4 +121,8 @@ COMPRESS_PRECOMPILERS = (
     ('text/less', '%s {infile} {outfile}' % os.path.join(SITE_ROOT,'./node_modules/less/bin/lessc')),
 )
 
+QUERYSTRING_AUTH = False
+QUERYSTRING_EXPIRE = 0
+
+
 
