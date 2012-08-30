@@ -57,17 +57,18 @@ class Level(FormView):
         }
 
         if code.find("@") > -1 and parser.program_length <= self.level.maxsize:
-
+            print 1, locals()
             if not self.request.session.has_key('levels_done'):
                 self.request.session['levels_done'] = []
-
+                print 2, locals()
             if self.level.hash not in self.request.session['levels_done']:
                 self.request.session['levels_done'].append(self.level)
-
+                print 3, locals()
             context['success'] = True
             next_level = self.level.next
-
+            print 4, locals()
             if next_level:
+                print 5, locals()
                 context['next_level'] = next_level.get_absolute_url()
 
         return HttpResponse(json.dumps(context), 'application/json')
