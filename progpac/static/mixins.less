@@ -1,0 +1,108 @@
+/*
+	Mixins
+	Some ideas and inspiration from LESS Elements
+	by Ryan Faerman see http://lesselements.com
+*/
+/*
+	@delay: Configures the delay between the time the element is loaded and the beginning of the animation sequence. [<time>]
+	@direction: Specifies whether or not the animation direction should alternate. [normal | alternate]
+	@duration: Configures the length of time that an animation should take to complete one cycle. [<time>]
+	@count: Configures the number of times the animation should repeat; you can specify infinite to repeat the animation indefinitely. [infinite | <number>]
+	@name: Specifies the name of the @keyframes at-rule describing the animation's keyframes. [none | <name>]
+	@timing-function: Configures the timing of the animation; that is, how the animation transitions through keyframes, by establishing acceleration curves. [<timing-function>]
+*/
+
+.animation(@delay: 0, @direction: normal, @duration: 400ms, @count: 1, @name: none, @timing-function: ease) {
+	/* Chome 4+, Safari 4.0+, Android 2.1+, iOS 3.2+ */
+	-webkit-animation-delay: @delay;
+	-webkit-animation-direction: @direction;
+	-webkit-animation-duration: @duration;
+	-webkit-animation-iteration-count: @count;
+	-webkit-animation-name: @name;
+	-webkit-animation-timing-function: @timing-function;
+
+	/* Firefox 5+ */
+	-moz-animation-delay: @delay;
+	-moz-animation-direction: @direction;
+	-moz-animation-duration: @duration;
+	-moz-animation-iteration-count: @count;
+	-moz-animation-name: @name;
+	-moz-animation-timing-function: @timing-function;
+
+	/* IE 10 */
+	-ms-animation-delay: @delay;
+	-ms-animation-direction: @direction;
+	-ms-animation-duration: @duration;
+	-ms-animation-iteration-count: @count;
+	-ms-animation-name: @name;
+	-ms-animation-timing-function: @timing-function;
+
+	/* No Opera support for CSS animations yet - Boo. */
+
+	/* W3C */
+	animation-delay: @delay;
+	animation-direction: @direction;
+	animation-duration: @duration;
+	animation-iteration-count: @count;
+	animation-name: @name;
+	animation-timing-function: @timing-function;
+
+	.forceHW();
+}
+
+/*
+	@property: Specifies the name or names of the CSS properties to which transitions should be applied. Only properties listed here are animated during transitions; changes to all other properties occur instantaneously as usual. [none | all | <property-name>]
+	@duration: Specifies the duration over which transitions should occur. You can specify a single duration that applies to all properties during the transition, or multiple values to allow each property to transition over a different period of time. [<time>]
+	@delay: Defines how long to wait between the time a property is changed and the transition actually begins. [<time>]
+	@timing-function: Specifies a cubic bezier curve used to define how intermediate values for properties are computed. [<timing-function>]
+*/
+.transition(@property: all, @duration: 400ms, @delay: 0, @timing-function: default) {
+	/* Chrome 4+, Safari 3.1+, Android 2.1+, iOS 3.2+ */
+	-webkit-transition-delay: @delay;
+	-webkit-transition-property: @property;
+	-webkit-transition-duration: @duration;
+	-webkit-transition-timing-function: @timing-function;
+
+	/* Firefox 4+ */
+	-moz-transition-delay: @delay;
+	-moz-transition-property: @property;
+	-moz-transition-duration: @duration;
+	-moz-transition-timing-function: @timing-function;
+
+	/* IE 10*/
+	-ms-transition-delay: @delay;
+	-ms-transition-property: @property;
+	-ms-transition-duration: @duration;
+	-ms-transition-timing-function: @timing-function;
+
+	/* Opera 10.5+ */
+	-o-transition-delay: @delay;
+	-o-transition-property: @property;
+	-o-transition-duration: @duration;
+	-o-transition-timing-function: @timing-function;
+
+	/* W3C */
+	transition-delay: @delay;
+	transition-property: @property;
+	transition-duration: @duration;
+	transition-timing-function: @timing-function;
+
+	.forceHW();
+}
+
+.forceHW() {
+	/* Force hardware acceleration if possible */
+	-webkit-transform: translateZ(0);
+	transform: translateZ(0);
+}
+
+/*
+	@params: Specifies the parameters to pass through to the transform style
+*/
+.transform(@params) {
+	-webkit-transform: @params;
+	-moz-transform: @params;
+	-ms-transform: @params;
+	-o-transform: @params;
+	transform: @params;
+}
