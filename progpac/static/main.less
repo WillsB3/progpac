@@ -1,103 +1,186 @@
 @import "bootstrap/less/bootstrap.less";
+@import "mixins.less";
 
 html, body {
-    background-color: #eee;
+	background-color: #eee;
 }
 
-.content {
-    margin-top: 44px;
+html {
+	background: url('/static/images/grass-vertical-strip.png') repeat-x center 58px;
+}
+
+body {
+	background: url('/static/images/masthead.png') no-repeat center top;
+}
+
+.masthead {
+	height: 684px;
+	margin-bottom: 2em;
+	position: relative;
+}
+
+.character {
+	.animation(0, alternate, 1s, infinite, characterAmbient, ease);
+	background-image: url('/static/images/character-small.png');
+	display: block;
+	height: 62px;
+	position: absolute;
+	width: 36px;
+
+	&.is-looking-forward {
+		background-position: 0 0;
+	}
+
+	&.is-looking-right {
+		background-position: 36px 64px;
+	}
+
+	&.is-looking-left {
+		background-position: 36px 0;
+	}
+
+	&.is-looking-away {
+		background-position: 0 64px;
+	}
+
+
 }
 
 .hero-unit {
-    input[type=text] {
-	display:block;
-	padding: 18px 8px 14px 8px;
-	font-size: 19px;
-    }
+	input[type=text] {
+	   display:block;
+	   padding: 18px 8px 14px 8px;
+	   font-size: 19px;
+	}
+
 }
 
 #level {
-    .game-grid canvas {
-        background: #fff;
-        border: 1px solid #CCC;
-        .border-radius(3px);
-    }
+	.game-grid canvas {
+		background: #fff;
+		border: 1px solid #CCC;
+		.border-radius(3px);
+	}
 
-    .editor {
+	.editor {
 	position: relative;
 
 	textarea {
-            width: 100%;
-            font-family: 'Ubuntu Mono', sans-serif;
-            font-weight: bold;
-            overflow-y: auto;
-            font-size: 15px;
-            position: relative;
+			width: 100%;
+			font-family: 'Ubuntu Mono', sans-serif;
+			font-weight: bold;
+			overflow-y: auto;
+			font-size: 15px;
+			position: relative;
 
 	}
 	.alert-error {
-            position: absolute;
-	    bottom: 113px;
-	    z-index: 100;
-	    width: 248px;
-	    height: 100px;
-	    h4 {
+			position: absolute;
+		bottom: 113px;
+		z-index: 100;
+		width: 248px;
+		height: 100px;
+		h4 {
 		margin-bottom: 10px;
-	    }
+		}
 	}
-    }
+	}
 }
 
 .form-actions {
-    margin-bottom: 0px;
-    padding-right: 0px;
-    text-align: right;
+	margin-bottom: 0px;
+	padding-right: 0px;
+	text-align: right;
 }
 
 .error {
-    margin-bottom: 3px;
-    display: none;
+	margin-bottom: 3px;
+	display: none;
 }
 
 .code-size {
-    font-weight: bold;
+	font-weight: bold;
 }
 
 li img {
-    display: block;
+	display: block;
 }
 
 
 #help {
-    .sprite-step {
-        width: 123px;
-        height: 103px;
-        background: url('/static/images/base.png') 0 -6px;
-    }
+	.sprite-step {
+		width: 123px;
+		height: 103px;
+		background: url('/static/images/base.png') 0 -6px;
+	}
 
-    .sprite-right {
-        width: 123px;
-        height: 103px;
-        background: url('/static/images/base.png') 0 163px;
-    }
+	.sprite-right {
+		width: 123px;
+		height: 103px;
+		background: url('/static/images/base.png') 0 163px;
+	}
 
-    .sprite-left {
-        width: 123px;
-        height: 103px;
-        background: url('/static/images/base.png') -140px -6px;
-    }
+	.sprite-left {
+		width: 123px;
+		height: 103px;
+		background: url('/static/images/base.png') -140px -6px;
+	}
 
-    .sprite-example {
-        width: 183px;
-        height: 163px;
-        background: url('/static/images/base.png') -140px -126px;
-    }
+	.sprite-example {
+		width: 183px;
+		height: 163px;
+		background: url('/static/images/base.png') -140px -126px;
+	}
 }
 
 p {
-    text-align: justify;
+	text-align: justify;
 }
 
 i {
-    color: #BFBFBF;
+	color: #BFBFBF;
+}
+
+/*
+ *  Variables
+*/
+@hoverAmount: 3px;
+
+/*
+ *  Animations
+*/
+@-moz-keyframes characterAmbient {
+	0% {
+		top: 0;
+	}
+	100% {
+		top: @hoverAmount;
+	}
+}
+
+@-ms-keyframes characterAmbient {
+	0% {
+		top: 0;
+	}
+	100% {
+		top: @hoverAmount;
+	}
+}
+
+@-webkit-keyframes characterAmbient {
+	0% {
+		-webkit-transform: translateY(0);
+	}
+	100% {
+		-webkit-transform: translateY(@hoverAmount);
+	}
+}
+
+@keyframes characterAmbient {
+	0% {
+		top: 0;
+	}
+	100% {
+		top: @hoverAmount;
+	}
 }

@@ -2,17 +2,20 @@
 
 {% block content %}
 <div id="home" class="container content">
+  <div class="masthead">
+  	<span class="character" style="left: 21px; top: 294px;"></span>
+  </div>
+  <div class="home-content">
+
+  </div>
 
   <div class="hero-unit">
     <h1>Welcome to ProgPac</h1>
-    <p>Enter your name below and hit "Start Game"</p>
-
-    <form method="post" >{% csrf_token %}
-      <input type="text" placeholder="Your name ..."  />
-      
-      <input name="submit" type="submit" value="Tutorial" class="btn btn btn-success btn-large" />
-      <input name="submit" type="submit" value="Start Game" class="btn btn btn-primary btn-large" />
-      
+	<p>Enter your name below and hit "Start Game"</p>
+	<form method="post" >{% csrf_token %}
+		<input type="text" placeholder="Your name ..."  />
+		<input name="submit" type="submit" value="Tutorial" class="btn btn btn-success btn-large" />
+		<input name="submit" type="submit" value="Start Game" class="btn btn btn-primary btn-large" />
     </form>
   </div>
 

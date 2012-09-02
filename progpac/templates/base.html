@@ -9,12 +9,12 @@
 
     <meta name="description" content="">
     <meta name="author" content="">
-    
+
     {% compress css %}
     <link rel="stylesheet" type="text/less" href="{{ STATIC_URL }}bootstrap/less/bootstrap.less">
     <link rel="stylesheet" type="text/less" href="{{ STATIC_URL }}main.less">
     {% endcompress %}
-    
+
     {% compress js %}
     <script type="text/javascript" src="{{ STATIC_URL }}jquery-1.8.0.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}jquery.form.js"></script>
@@ -23,14 +23,14 @@
     <script type="text/javascript" src="{{ STATIC_URL }}bootstrap/js/bootstrap-modal.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}main.js"></script>
     {% endcompress %}
-    
+
     {% if debug %}
     <script type="text/javascript" src="{{ STATIC_URL }}limejs/closure/closure/goog/base.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}game/game.js"></script>
     {% else %}
     <script type="text/javascript" src="{{ STATIC_URL }}game/game-min.js" charset="utf-8"></script>
     {% endif %}
-        
+
     <script type="text/javascript">
       var LEVEL = {{ level_json|safe|default:"null" }};
       var CODE = "{{ code|default:"" }}";
@@ -59,11 +59,11 @@
     		  {% for level in tutorial_levels %}
                   <li>
                     <a href="{{ level.get_absolute_url }}">
-                      {{ level.name|capfirst }} 
+                      {{ level.name|capfirst }}
 		      {% if level in request.session.levels_done %}
 		      <i class="icon-star-empty"></i>
 		      {% endif %}
-                    </a> 
+                    </a>
                   </li>
                   {% endfor %}
     		</ul>
@@ -101,8 +101,8 @@
     	</div>
       </div>
     </div>
-    
+
     {% block content %}{% endblock %}
-    
+
   </body>
 </html>
